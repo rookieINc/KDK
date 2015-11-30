@@ -32,4 +32,4 @@
 *.dSYM/
 
 # Useless files
-useless/*
+/src/useless/
