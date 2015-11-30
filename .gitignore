@@ -32,4 +32,4 @@
 *.dSYM/
 
 # Useless files
-/src/useless/
+/src/bak/
