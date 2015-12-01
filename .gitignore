@@ -32,6 +32,6 @@
 *.dSYM/
 
 # Useless files
-/src/bak/*
-/inc/*
-/lib/*
+./src/bak/*
+./inc/*
+./lib/*
