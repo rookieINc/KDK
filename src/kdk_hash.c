@@ -64,11 +64,14 @@ kdk_hash_table_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_ui
     kdk_hash_table_t   *hash_table;
     kdk_hash_node_t   **board;
 
-    if(prime == 0 || mem_pool_size == 0)
+    if(prime == 0)
         return KDK_NULL;
 
     if(mem_pool == KDK_NULL)
     {
+        if(mem_pool_size == 0)
+            return KDK_NULL;
+
         mem_pool = kdk_mem_pool_create(mem_pool_size, mem_pool_size);
         if(mem_pool == KDK_NULL)
             return KDK_NULL;
@@ -104,7 +107,7 @@ kdk_uint32
 kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void *value, kdk_uint32 value_len)
 {
     kdk_uint32       pos, res; 
-    kdk_hash_node_t  *tmp, *new;
+    kdk_hash_node_t  **tmp, *new;
 
     if(hash_table == KDK_NULL || key == KDK_NULL || value == KDK_NULL || value_len == 0)
         return KDK_INARG;
@@ -114,7 +117,7 @@ kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void
         return res;
 
     pos = pos % hash_table->prime;
-    tmp = *(hash_table->board + pos);
+    tmp = hash_table->board + pos;
 
 /*
     fprintf(stderr, "set key:%s\n", key);
@@ -126,14 +129,14 @@ kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void
     if(new == KDK_NULL)
         return KDK_FAILURE;
 
-    if(tmp->key == KDK_NULL)
+    if(*tmp == KDK_NULL)
     {
-        *tmp = *new;
+        *tmp = new;
     }
     else
     {
-        new->next = tmp->next;
-        tmp->next = new;
+        new->next = (*tmp)->next;
+        (*tmp)->next = new;
     }
 
     hash_table->count++;
@@ -156,6 +159,7 @@ kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key)
 
     pos = pos % hash_table->prime;
     tmp = *(hash_table->board + pos);
+
 /*
     fprintf(stderr, "get key:%s\n", key);
     fprintf(stderr, "get pos:%d\n", pos);
