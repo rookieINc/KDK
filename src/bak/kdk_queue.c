@@ -112,7 +112,7 @@ kdk_void kdk_queue_destroy(kdk_queue_t *queue)
     if(queue == KDK_NULL) 
         return ;
 
-    if(queue->queue_mem_pool != KDK_NULL && queue->queue_mem_pool == 0)
+    if(queue->queue_mem_pool != KDK_NULL && queue->queue_mem_pool_type == 0)
         kdk_mem_pool_destroy(queue->queue_mem_pool);
 
     return ;

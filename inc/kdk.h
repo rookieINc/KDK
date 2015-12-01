@@ -2,12 +2,12 @@
 /************************************************************
  * Copyright(C), 2015-2016, QTPAY
  * 
- * FileName:    kdk.h
- * Author:      rookieINc
- * Version:     v0.1.0
- * Date:        2015-12-01 06:58
- * Description: kdk.h
- * History:     
+ * FileName    : kdk.h
+ * Author      : rookieINc
+ * Version     : v0.1.0
+ * Date        : 2015-12-01 16:46
+ * Description : kdk.h
+ * History     :     
  ***********************************************************/
 
 

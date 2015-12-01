@@ -1,20 +1,20 @@
-PROJECT_PATH=..
-INC_PATH=-I$(PROJECT_PATH)/inc
-LIB_PATH=-L$(PROJECT_PATH)/lib
+KDK_PATH=$(subst $(prefix),,$(shell cd ..; pwd))
+INC_PATH=-I$(KDK_PATH)/inc
+LIB_PATH=-L$(KDK_PATH)/lib
 
 SO_FILE=libkdk.so
-H_FILE=kdk.h kdk_define.h kdk_malloc.h kdk_mem_pool.h kdk_hash.h
-C_FILE=kdk_malloc.c kdk_mem_pool.c kdk_hash.c
+H_FILE=kdk.h kdk_base.h kdk_define.h kdk_malloc.h kdk_mem_pool.h kdk_hash.h kdk_string.h
+C_FILE=kdk_malloc.c kdk_mem_pool.c kdk_hash.c kdk_string.c
 
 .PHONY:ALL
 ALL:inc_install $(SO_FILE) lib_install
 
 
 inc_install:
-	cp $(H_FILE) $(PROJECT_PATH)/inc/
+	cp $(H_FILE) $(KDK_PATH)/inc/
 
 lib_install:
-	cp $(SO_FILE) $(PROJECT_PATH)/lib/
+	cp $(SO_FILE) $(KDK_PATH)/lib/
 
 libkdk.so:$(C_FILE)
 	gcc -o libkdk.so -fpic -shared $(C_FILE) $(INC_PATH)

@@ -2,12 +2,12 @@
 /************************************************************
  * Copyright(C), 2015-2016, QTPAY
  * 
- * FileName:    kdk_mem_pool.h
- * Author:      rookieINc
- * Version:     v0.1.0
- * Date:        2015-12-01 07:28
- * Description: kdk_mem_pool.h
- * History:     
+ * FileName    : kdk_mem_pool.h
+ * Author      : rookieINc
+ * Version     : v0.1.0
+ * Date        : 2015-12-01 07:28
+ * Description : kdk_mem_pool.h
+ * History     :     
  ***********************************************************/
 
 

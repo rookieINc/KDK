@@ -93,7 +93,7 @@ kdk_void kdk_list_destroy(kdk_list_t *list)
     if(list == KDK_NULL) 
         return ;
 
-    if(list->list_mem_pool != KDK_NULL && list->list_mem_pool == 0)
+    if(list->list_mem_pool != KDK_NULL && list->list_mem_pool_type == 0)
         kdk_mem_pool_destroy(list->list_mem_pool);
 
     return ;

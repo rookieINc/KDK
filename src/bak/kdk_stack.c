@@ -108,7 +108,7 @@ kdk_void kdk_stack_destroy(kdk_stack_t *stack)
     if(stack == KDK_NULL) 
         return ;
 
-    if(stack->stack_mem_pool != KDK_NULL && stack->stack_mem_pool == 0)
+    if(stack->stack_mem_pool != KDK_NULL && stack->stack_mem_pool_type == 0)
         kdk_mem_pool_destroy(stack->stack_mem_pool);
 
     return ;

@@ -2,12 +2,12 @@
 /************************************************************
  * Copyright(C), 2015-2016, QTPAY
  * 
- * FileName:    kdk_malloc.h
- * Author:      rookieINc
- * Version:     v0.1.0
- * Date:        2015-12-01 07:14
- * Description: kdk_malloc.h
- * History:     
+ * FileName    : kdk_malloc.h
+ * Author      : rookieINc
+ * Version     : v0.1.0
+ * Date        : 2015-12-01 07:14
+ * Description : kdk_malloc.h
+ * History     :     
  ***********************************************************/
 
 

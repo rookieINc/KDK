@@ -2,12 +2,12 @@
 /************************************************************
  * Copyright(C), 2015-2016, QTPAY
  * 
- * FileName:    kdk_hash.c
- * Author:      rookieINc
- * Version:     v0.1.0
- * Date:        2015-12-01 07:42
- * Description: kdk_hash.c
- * History:     
+ * FileName    : kdk_hash.c
+ * Author      : rookieINc
+ * Version     : v0.1.0
+ * Date        : 2015-12-01 07:42
+ * Description : kdk_hash.c
+ * History     :     
  ***********************************************************/
 
 
@@ -179,7 +179,7 @@ kdk_hash_table_destroy(kdk_hash_table_t *hash_table)
     if(hash_table == KDK_NULL) 
         return ;
 
-    if(hash_table->mem_pool != KDK_NULL && hash_table->mem_pool == 0)
+    if(hash_table->mem_pool != KDK_NULL && hash_table->mem_pool_type == 0)
     {
         kdk_mem_pool_destroy(hash_table->mem_pool);
     }
