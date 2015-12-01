@@ -33,5 +33,5 @@
 
 # Useless files
 ./src/bak/*
-./inc/*
-./lib/*
+./inc/kdk*.h
+./lib/*kdk*
