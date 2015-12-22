@@ -25,6 +25,9 @@
 #define MEMPOOLALIGNSIZE    ALIGN(sizeof(kdk_mem_pool_t))
 #define MEMCELLALIGNSIZE    ALIGN(sizeof(kdk_mem_cell_t))
 
+#define OTHER_MEM_POOL      1
+#define OWN_MEM_POOL        0
+
 struct  kdk_mem_cell_s
 {
     kdk_uint32              size;

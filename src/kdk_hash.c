@@ -60,7 +60,7 @@ kdk_hash_node_create(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void *va
 kdk_hash_table_t  *
 kdk_hash_table_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_uint32 prime)
 {
-    kdk_uint32          mem_pool_type = 1;
+    kdk_uint32          mem_pool_type = OTHER_MEM_POOL;
     kdk_hash_table_t   *hash_table;
     kdk_hash_node_t   **board;
 
@@ -75,14 +75,14 @@ kdk_hash_table_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_ui
         mem_pool = kdk_mem_pool_create(mem_pool_size, mem_pool_size);
         if(mem_pool == KDK_NULL)
             return KDK_NULL;
-        mem_pool_type = 0;
+        mem_pool_type = OWN_MEM_POOL;
     }
 
     //hash_table = (kdk_hash_table *)kdk_malloc(sizeof(kdk_HashTable)); 
     hash_table = (kdk_hash_table_t *)kdk_mem_pool_malloc(mem_pool, sizeof(kdk_hash_table_t)); 
     if(hash_table == KDK_NULL)
     {
-        if(mem_pool_type == 0)
+        if(mem_pool_type == OWN_MEM_POOL)
             kdk_mem_pool_destroy(mem_pool);
         return KDK_NULL;
     }
@@ -183,7 +183,7 @@ kdk_hash_table_destroy(kdk_hash_table_t *hash_table)
     if(hash_table == KDK_NULL) 
         return ;
 
-    if(hash_table->mem_pool != KDK_NULL && hash_table->mem_pool_type == 0)
+    if(hash_table->mem_pool != KDK_NULL && hash_table->mem_pool_type == OWN_MEM_POOL)
     {
         kdk_mem_pool_destroy(hash_table->mem_pool);
     }

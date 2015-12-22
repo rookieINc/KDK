@@ -19,6 +19,7 @@
 #include "kdk_malloc.h"
 #include "kdk_mem_pool.h"
 #include "kdk_hash.h"
+#include "kdk_config.h"
 /*
 #include "kdk_stack.h"
 #include "kdk_queue.h"
