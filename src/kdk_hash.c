@@ -174,7 +174,7 @@ kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key)
         tmp = tmp->next;
     }
 
-    return KDK_NULL;
+    return KDK_NULLFOUND;
 }
 
 kdk_void 

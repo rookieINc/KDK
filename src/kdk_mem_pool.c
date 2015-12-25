@@ -109,9 +109,10 @@ kdk_mem_pool_malloc(kdk_mem_pool_t *head, kdk_uint32 mallocSize)
         mCellResult = head->current;
     }
 
-    mCellResult->free -= alignSize;
-    result = mCellResult->offset;
+    mCellResult->free   -= alignSize;
+    result               = mCellResult->offset;
     mCellResult->offset += alignSize;
+
     memset(result, 0, alignSize);
 
     return result;

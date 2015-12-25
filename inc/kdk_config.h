@@ -22,6 +22,11 @@
 #define FLAG_SECTION   2
 #define FLAG_KEYVALUE  3
 
+#define CONFIG_KEY_LEN      42
+#define CONFIG_VALUE_LEN    42
+#define CONFIG_SECTION_LEN  42
+#define CONFIG_LINE_LEN     110
+
 struct kdk_config_s
 {
     kdk_uint32                  mem_pool_type;
@@ -33,10 +38,10 @@ struct kdk_config_s
 typedef struct kdk_config_s kdk_config_t;
 
 kdk_void 
-kdk_config_close(kdk_config_t *config);
+kdk_config_destroy(kdk_config_t *config);
 
 kdk_config_t * 
-kdk_config_open(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_char32 *config_file);
+kdk_config_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_char32 *config_file);
 
 kdk_uint32 
 kdk_config_get_value(kdk_config_t *config, kdk_char32 *section, kdk_char32 *key, kdk_char32 *value);

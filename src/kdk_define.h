@@ -23,6 +23,7 @@ typedef double       kdk_double32;
 typedef long         kdk_long32;
 
 #define KDK_NULL        NULL
+#define KDK_NULLFOUND   ((kdk_void *)(1))
 
 #define KDK_SUCCESS     0x0000
 #define KDK_FAILURE     0x6001
@@ -35,6 +36,8 @@ typedef long         kdk_long32;
 
 #define malloc MALLOC
 #define free   FREE
+
+#define END_TAG '\0'
 
 #define CHECK_NULL_AND_RETURN(x,y)\
     do{\

@@ -27,7 +27,7 @@ str_trim_head(kdk_char32 *str)
 
     for(i = 0; i < strlen(head); i++)
         str[i] = head[i];
-    str[i] = '\0';
+    str[i] = END_TAG;
     
     return ;
 }
@@ -43,7 +43,7 @@ str_trim_tail(kdk_char32 *str)
 
     if(++tail == str + strlen(str) - 1) return ;
 
-    tail[1] = '\0';
+    tail[1] = END_TAG;
 
     return ;
 }
