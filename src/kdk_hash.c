@@ -45,7 +45,7 @@ kdk_hash_node_create(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void *va
     if(hash_node->key == KDK_NULL)
         return KDK_NULL;
 
-    hash_node->value = kdk_mem_pool_malloc(hash_table->mem_pool, value_len);
+    hash_node->value = kdk_mem_pool_malloc(hash_table->mem_pool, value_len + 1);
     if(hash_node->value == KDK_NULL)
         return KDK_NULL;
 

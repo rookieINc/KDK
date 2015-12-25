@@ -115,7 +115,7 @@ kdk_config_set_value(kdk_config_t *config, kdk_char32 *section, kdk_char32 *key,
  
     snprintf(hash_key, hash_key_len, "%*s%*s", CONFIG_SECTION_LEN, section, CONFIG_KEY_LEN, key);
 
-    ret_code = kdk_hash_table_set_value(config->config_table, (kdk_char32 *)hash_key, (void *)value, strlen(value) + 1);
+    ret_code = kdk_hash_table_set_value(config->config_table, (kdk_char32 *)hash_key, (void *)value, strlen(value));
     if(ret_code)
         return KDK_NULLPTR;
 

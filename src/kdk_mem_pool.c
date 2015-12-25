@@ -29,6 +29,7 @@ kdk_mem_cell_create(kdk_uint32 size)
     cell->free = ALIGN(size);
     cell->offset = (kdk_void *)cell + MEMCELLALIGNSIZE;
     cell->next = KDK_NULL;
+    memset(cell->offset, 0, cell->free);
 
     return  cell;
 }
@@ -113,7 +114,7 @@ kdk_mem_pool_malloc(kdk_mem_pool_t *head, kdk_uint32 mallocSize)
     result               = mCellResult->offset;
     mCellResult->offset += alignSize;
 
-    memset(result, 0, alignSize);
+    //memset(result, 0, alignSize);
 
     return result;
 }

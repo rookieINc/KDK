@@ -1,4 +1,5 @@
 KDK_PATH=$(subst $(prefix),,$(shell cd ..; pwd))
+FEE_PATH=$(subst $(prefix),,$(shell cd ../../FEE; pwd))
 INC_PATH=-I$(KDK_PATH)/inc
 LIB_PATH=-L$(KDK_PATH)/lib
 
@@ -15,6 +16,7 @@ inc_install:
 
 lib_install:
 	cp $(SO_FILE) $(KDK_PATH)/lib/
+	cp $(SO_FILE) $(FEE_PATH)/src/
 
 libkdk.so:$(C_FILE)
 	gcc -o libkdk.so -fpic -shared $(C_FILE) $(INC_PATH)
