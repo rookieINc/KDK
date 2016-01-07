@@ -25,6 +25,8 @@
 #include <sys/stat.h>
 #include <sys/fcntl.h>
 
+#include <dlfcn.h>
+
 #include "kdk_define.h"
 
 #endif /* _KDK_BASE_H_INCLUDED_ */

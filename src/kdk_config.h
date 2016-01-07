@@ -16,7 +16,7 @@
 
 #include "kdk_base.h"
 #include "kdk_mem_pool.h"
-#include "kdk_hash.h"
+#include "kdk_hash_table.h"
 
 #define FLAG_COMMENT   1
 #define FLAG_SECTION   2

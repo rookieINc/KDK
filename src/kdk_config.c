@@ -87,7 +87,7 @@ kdk_config_get_value(kdk_config_t *config, kdk_char32 *section, kdk_char32 *key,
     if(strlen(section) + strlen(key) >= hash_key_len)    
         return KDK_OVERFLOW;
 
-    snprintf(hash_key, hash_key_len, "%*s%*s", CONFIG_SECTION_LEN, section, CONFIG_KEY_LEN, key);
+    snprintf(hash_key, hash_key_len, "%s%s", section, key); //TODO
 
     ret_value = (kdk_char32 *)kdk_hash_table_get_value(config->config_table, hash_key);
     if(ret_value == KDK_NULL)
@@ -113,7 +113,7 @@ kdk_config_set_value(kdk_config_t *config, kdk_char32 *section, kdk_char32 *key,
     if(strlen(section) + strlen(key) >= hash_key_len)    
         return KDK_OVERFLOW;
  
-    snprintf(hash_key, hash_key_len, "%*s%*s", CONFIG_SECTION_LEN, section, CONFIG_KEY_LEN, key);
+    snprintf(hash_key, hash_key_len, "%s%s", section, key); //TODO
 
     ret_code = kdk_hash_table_set_value(config->config_table, (kdk_char32 *)hash_key, (void *)value, strlen(value));
     if(ret_code)
@@ -215,11 +215,11 @@ kdk_config_parse_line(kdk_config_t *config, kdk_char32 *str, kdk_char32 *section
     {
         case    FLAG_COMMENT:
             ret_code = kdk_config_parse_comment(str);
-fprintf(stderr, "[%s]:[%s]\n", "comment", str);
+//fprintf(stderr, "[%s]:[%s]\n", "comment", str);
             break;
         case    FLAG_SECTION:
             ret_code = kdk_config_parse_section(str, section);
-fprintf(stderr, "[%s]:[%s]\n", "section", section);
+//fprintf(stderr, "[%s]:[%s]\n", "section", section);
             break;
         case    FLAG_KEYVALUE:
             if(strlen(section) == 0)
@@ -230,10 +230,10 @@ fprintf(stderr, "[%s]:[%s]\n", "section", section);
                 return ret_code;
 
             ret_code = kdk_config_set_value(config, section, key, value);
-fprintf(stderr, "[%s]:[%s][%s]\n", "keyvlue", key, value);
+//fprintf(stderr, "[%s]:[%s][%s]\n", "keyvlue", key, value);
             break;
         default:
-fprintf(stderr, "dafault\n");
+//fprintf(stderr, "dafault\n");
             ret_code = KDK_INVAL;
             break;
     }

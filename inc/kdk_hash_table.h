@@ -2,17 +2,17 @@
 /************************************************************
  * Copyright(C), 2015-2016, QTPAY
  * 
- * FileName    : kdk_hash.h
+ * FileName    : kdk_hash_table.h
  * Author      : rookieINc
  * Version     : v0.1.0
  * Date        : 2015-12-01 07:44
- * Description : kdk_hash.h
+ * Description : kdk_hash_table.h
  * History     :     
  ***********************************************************/
 
 
-#ifndef _KDK_HASH_H_INCLUDED_
-#define _KDK_HASH_H_INCLUDED_
+#ifndef _KDK_HASH_TABLE_H_INCLUDED_
+#define _KDK_HASH_TABLE_H_INCLUDED_
 
 #include "kdk_base.h"
 #include "kdk_mem_pool.h"
@@ -55,4 +55,4 @@ kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key);
 kdk_void                
 kdk_hash_table_destroy(kdk_hash_table_t *hash_table);
 
-#endif /* _KDK_HASH_H_INCLUDED_ */
+#endif /* _KDK_HASH_TABLE_H_INCLUDED_ */
