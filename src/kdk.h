@@ -20,6 +20,7 @@
 #include "kdk_mem_pool.h"
 #include "kdk_hash_table.h"
 #include "kdk_config.h"
+#include "kdk_dl.h"
 /*
 #include "kdk_stack.h"
 #include "kdk_queue.h"

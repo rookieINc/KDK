@@ -37,6 +37,8 @@ struct kdk_hash_table_s
 
 typedef struct kdk_hash_table_s kdk_hash_table_t;
 
+kdk_hash_node_t  *current_hash_node;
+
 static kdk_uint32          
 kdk_djb_hash(kdk_char32 *str, kdk_uint32 *res);
 
@@ -51,6 +53,9 @@ kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void
 
 kdk_void *              
 kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key);
+
+kdk_void *              
+kdk_hash_table_next_value(kdk_hash_table_t *hash_table);
 
 kdk_void                
 kdk_hash_table_destroy(kdk_hash_table_t *hash_table);

@@ -13,6 +13,8 @@
 
 #include "kdk_hash_table.h"
 
+extern kdk_hash_node_t *current_hash_node;
+
 static kdk_uint32 
 kdk_djb_hash(kdk_char32 *str, kdk_uint32 *res)
 {
@@ -94,11 +96,11 @@ kdk_hash_table_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_ui
         return KDK_NULL;
     }
 
-    hash_table->prime = prime;
-    hash_table->count = 0;
+    hash_table->count         = 0;
+    hash_table->prime         = prime;
+    hash_table->board         = board;
+    hash_table->mem_pool      = mem_pool;
     hash_table->mem_pool_type = mem_pool_type;
-    hash_table->mem_pool = mem_pool;
-    hash_table->board = board;
 
     return hash_table;
 }
@@ -135,11 +137,11 @@ kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void
     }
     else
     {
-        new->next = (*tmp)->next;
+        new->next    = (*tmp)->next;
         (*tmp)->next = new;
     }
 
-    hash_table->count++;
+    (hash_table->count)++;
 
     return KDK_SUCCESS;
 }
@@ -175,6 +177,56 @@ kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key)
     }
 
     return KDK_NULLFOUND;
+}
+
+
+kdk_void *
+kdk_hash_table_next_value(kdk_hash_table_t *hash_table)
+{
+    kdk_uint32          i, pos, ret_code;
+
+    if(hash_table == KDK_NULL)
+        return KDK_NULL;
+
+    if(current_hash_node != KDK_NULL && current_hash_node->next != KDK_NULL)
+    {
+        current_hash_node = current_hash_node->next;
+        return current_hash_node->value;
+    }
+    else
+    {
+        if(current_hash_node != KDK_NULL && current_hash_node->next == KDK_NULL)
+        {
+            if(current_hash_node->key == KDK_NULL)
+                return KDK_NULL;
+
+            ret_code = kdk_djb_hash(current_hash_node->key, &pos);
+            if(ret_code)
+                return KDK_NULL;
+
+            pos = pos % hash_table->prime + 1;
+
+            if(pos >= hash_table->prime)
+                return KDK_NULLFOUND;
+        }
+        else
+        {
+            pos = 0;
+        }
+
+        current_hash_node = *(hash_table->board + pos);
+
+        while(current_hash_node == KDK_NULL && pos < hash_table->prime - 1)
+        {
+            pos++;
+            current_hash_node = *(hash_table->board + pos);
+        }
+
+        if(current_hash_node == KDK_NULL)
+            return KDK_NULLFOUND;
+        else
+            return current_hash_node->value;
+    }
 }
 
 kdk_void 
