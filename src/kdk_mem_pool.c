@@ -29,10 +29,12 @@ kdk_mem_cell_create(kdk_uint32 size)
     cell->free = ALIGN(size);
     cell->offset = (kdk_void *)cell + MEMCELLALIGNSIZE;
     cell->next = KDK_NULL;
+
     memset(cell->offset, 0, cell->free);
 
     return  cell;
 }
+
 
 static kdk_uint32 
 kdk_mem_cell_clear(kdk_mem_cell_t *cell)
@@ -46,6 +48,7 @@ kdk_mem_cell_clear(kdk_mem_cell_t *cell)
 
     return KDK_SUCCESS;
 }
+
 
 kdk_mem_pool_t *
 kdk_mem_pool_create(kdk_uint32 size, kdk_uint32 reallocSize)
@@ -68,12 +71,13 @@ kdk_mem_pool_create(kdk_uint32 size, kdk_uint32 reallocSize)
         return KDK_NULL;		
 
     head->realloc_size = ALIGN(reallocSize);
-    head->clear = ISNOTCLEAR;
-    head->current = cell;
-    head->cell_list = cell;
+    head->clear        = ISNOTCLEAR;
+    head->cell_curr    = cell;
+    head->cell_list    = cell;
 
     return  head;
 }
+
 
 kdk_void *
 kdk_mem_pool_malloc(kdk_mem_pool_t *head, kdk_uint32 mallocSize)
@@ -88,10 +92,10 @@ kdk_mem_pool_malloc(kdk_mem_pool_t *head, kdk_uint32 mallocSize)
     alignSize = ALIGN(mallocSize);
 
     if(head->clear == ISCLEAR)
-        while(head->current != KDK_NULL && head->current->free < alignSize)
-            head->current = head->current->next;
+        while(head->cell_curr != KDK_NULL && head->cell_curr->free < alignSize)
+            head->cell_curr = head->cell_curr->next;
 
-    if(head->current == KDK_NULL || head->current->free < alignSize)
+    if(head->cell_curr == KDK_NULL || head->cell_curr->free < alignSize)
     {
         if(alignSize < ALIGN(head->realloc_size))
             initSize = ALIGN(head->realloc_size);
@@ -102,12 +106,12 @@ kdk_mem_pool_malloc(kdk_mem_pool_t *head, kdk_uint32 mallocSize)
         if(mCellResult == KDK_NULL)
             return KDK_NULL;
 
-        head->current->next = mCellResult;
-        head->current = mCellResult;
+        head->cell_curr->next = mCellResult;
+        head->cell_curr       = mCellResult;
     }
     else
     {
-        mCellResult = head->current;
+        mCellResult = head->cell_curr;
     }
 
     mCellResult->free   -= alignSize;
@@ -119,26 +123,28 @@ kdk_mem_pool_malloc(kdk_mem_pool_t *head, kdk_uint32 mallocSize)
     return result;
 }
 
+
 kdk_uint32 
 kdk_mem_pool_clear(kdk_mem_pool_t *head)
 {
-    kdk_mem_cell_t  *currCell;
+    kdk_mem_cell_t  *cell_curr;
 
     if(head == KDK_NULL)
         return KDK_INARG; 
 
-    head->clear = ISCLEAR;
-    currCell = head->cell_list;
-    head->current = currCell;
+    head->clear     = ISCLEAR;
+    cell_curr       = head->cell_list;
+    head->cell_curr = cell_curr;
 
-    while(currCell != KDK_NULL)
+    while(cell_curr != KDK_NULL)
     {
-        kdk_mem_cell_clear(currCell);
-        currCell = currCell->next;
+        kdk_mem_cell_clear(cell_curr);
+        cell_curr = cell_curr->next;
     }
 
     return KDK_SUCCESS;
 }
+
 
 kdk_void 
 kdk_mem_pool_destroy(kdk_mem_pool_t *head)
@@ -153,29 +159,11 @@ kdk_mem_pool_destroy(kdk_mem_pool_t *head)
         currCell = head->cell_list;
         head->cell_list = head->cell_list->next;
         kdk_free(currCell);
+        currCell = KDK_NULL;
     }
 
     kdk_free(head);
     head = KDK_NULL;
+
     return;
-}
-
-kdk_uint32
-kdk_mem_pool_print(kdk_mem_pool_t *head)
-{
-    kdk_uint32      i = 0;
-
-    if(head == KDK_NULL)
-        return KDK_NULLPTR;
-
-    kdk_mem_cell_t  sCell;
-    head->current = head->cell_list;
-    while(head->current != KDK_NULL)
-    {
-        i++;
-        memcpy(&sCell, head->current, MEMCELLALIGNSIZE);
-        head->current = sCell.next;
-    }
-
-    return KDK_SUCCESS;
 }

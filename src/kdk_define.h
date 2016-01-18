@@ -25,6 +25,8 @@ typedef long         kdk_long32;
 #define KDK_NULL        NULL
 #define KDK_NULLFOUND   ((kdk_void *)(1))
 
+#define KDK_LINUXERR    -1
+
 #define KDK_SUCCESS     0x0000
 #define KDK_FAILURE     0x6001
 #define KDK_NULLPTR     0x6002

@@ -13,7 +13,7 @@
 
 #include "kdk_hash_table.h"
 
-extern kdk_hash_node_t *current_hash_node;
+extern kdk_hash_node_t *hash_node_curr;
 
 static kdk_uint32 
 kdk_djb_hash(kdk_char32 *str, kdk_uint32 *res)
@@ -30,6 +30,7 @@ kdk_djb_hash(kdk_char32 *str, kdk_uint32 *res)
 
     return KDK_SUCCESS;
 }
+
 
 static kdk_hash_node_t *
 kdk_hash_node_create(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void *value, kdk_uint32 value_len)
@@ -59,6 +60,7 @@ kdk_hash_node_create(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void *va
     return hash_node;
 }
 
+
 kdk_hash_table_t  *
 kdk_hash_table_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_uint32 prime)
 {
@@ -71,9 +73,6 @@ kdk_hash_table_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_ui
 
     if(mem_pool == KDK_NULL)
     {
-        if(mem_pool_size == 0)
-            return KDK_NULL;
-
         mem_pool = kdk_mem_pool_create(mem_pool_size, mem_pool_size);
         if(mem_pool == KDK_NULL)
             return KDK_NULL;
@@ -85,7 +84,10 @@ kdk_hash_table_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_ui
     if(hash_table == KDK_NULL)
     {
         if(mem_pool_type == OWN_MEM_POOL)
+        {
             kdk_mem_pool_destroy(mem_pool);
+            mem_pool = KDK_NULL;
+        }
         return KDK_NULL;
     }
 
@@ -93,6 +95,7 @@ kdk_hash_table_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_ui
     if(board == KDK_NULL) 
     {
         kdk_hash_table_destroy(hash_table);  
+        hash_table = KDK_NULL;
         return KDK_NULL;
     }
 
@@ -104,6 +107,7 @@ kdk_hash_table_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_ui
 
     return hash_table;
 }
+
 
 kdk_uint32 
 kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void *value, kdk_uint32 value_len)
@@ -145,6 +149,7 @@ kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void
 
     return KDK_SUCCESS;
 }
+
 
 kdk_void *
 kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key)
@@ -188,19 +193,19 @@ kdk_hash_table_next_value(kdk_hash_table_t *hash_table)
     if(hash_table == KDK_NULL)
         return KDK_NULL;
 
-    if(current_hash_node != KDK_NULL && current_hash_node->next != KDK_NULL)
+    if(hash_node_curr != KDK_NULL && hash_node_curr->next != KDK_NULL)
     {
-        current_hash_node = current_hash_node->next;
-        return current_hash_node->value;
+        hash_node_curr = hash_node_curr->next;
+        return hash_node_curr->value;
     }
     else
     {
-        if(current_hash_node != KDK_NULL && current_hash_node->next == KDK_NULL)
+        if(hash_node_curr != KDK_NULL && hash_node_curr->next == KDK_NULL)
         {
-            if(current_hash_node->key == KDK_NULL)
+            if(hash_node_curr->key == KDK_NULL)
                 return KDK_NULL;
 
-            ret_code = kdk_djb_hash(current_hash_node->key, &pos);
+            ret_code = kdk_djb_hash(hash_node_curr->key, &pos);
             if(ret_code)
                 return KDK_NULL;
 
@@ -214,20 +219,21 @@ kdk_hash_table_next_value(kdk_hash_table_t *hash_table)
             pos = 0;
         }
 
-        current_hash_node = *(hash_table->board + pos);
+        hash_node_curr = *(hash_table->board + pos);
 
-        while(current_hash_node == KDK_NULL && pos < hash_table->prime - 1)
+        while(hash_node_curr == KDK_NULL && pos < hash_table->prime - 1)
         {
             pos++;
-            current_hash_node = *(hash_table->board + pos);
+            hash_node_curr = *(hash_table->board + pos);
         }
 
-        if(current_hash_node == KDK_NULL)
+        if(hash_node_curr == KDK_NULL)
             return KDK_NULLFOUND;
         else
-            return current_hash_node->value;
+            return hash_node_curr->value;
     }
 }
+
 
 kdk_void 
 kdk_hash_table_destroy(kdk_hash_table_t *hash_table)
@@ -238,6 +244,7 @@ kdk_hash_table_destroy(kdk_hash_table_t *hash_table)
     if(hash_table->mem_pool != KDK_NULL && hash_table->mem_pool_type == OWN_MEM_POOL)
     {
         kdk_mem_pool_destroy(hash_table->mem_pool);
+        hash_table->mem_pool = KDK_NULL;
     }
 
     return ;

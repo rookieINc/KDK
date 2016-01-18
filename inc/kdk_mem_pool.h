@@ -35,15 +35,17 @@ struct  kdk_mem_cell_s
     kdk_void               *offset;
     struct kdk_mem_cell_s  *next;
 };
+
 typedef struct kdk_mem_cell_s kdk_mem_cell_t;
 
 struct kdk_mem_pool_s
 {
     kdk_uint32          realloc_size; 
     kdk_uint32          clear; //Zeta 1:is clear 0:is not clear
-    kdk_mem_cell_t     *current;
+    kdk_mem_cell_t     *cell_curr;
     kdk_mem_cell_t     *cell_list;
 };
+
 typedef struct kdk_mem_pool_s kdk_mem_pool_t;
 
 static kdk_mem_cell_t *
@@ -57,9 +59,6 @@ kdk_mem_pool_create(kdk_uint32 size, kdk_uint32 realloc_size);
 
 kdk_void *          
 kdk_mem_pool_malloc(kdk_mem_pool_t *head, kdk_uint32 malloc_size);
-
-kdk_uint32          
-kdk_mem_pool_print(kdk_mem_pool_t *head);
 
 kdk_uint32          
 kdk_mem_pool_clear(kdk_mem_pool_t *head);

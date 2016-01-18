@@ -29,14 +29,14 @@ struct kdk_dl_handle_s
 
 typedef struct kdk_dl_handle_s kdk_dl_handle_t;
 
-struct kdk_dl_handle_collection_s
+struct kdk_dl_handle_coll_s
 {
     kdk_uint32                mem_pool_type;
     struct kdk_mem_pool_s    *mem_pool;
-    struct kdk_hash_table_s  *dl_handle_collection;
+    struct kdk_hash_table_s  *coll;
 };
 
-typedef struct kdk_dl_handle_collection_s kdk_dl_handle_collection_t;
+typedef struct kdk_dl_handle_coll_s kdk_dl_handle_coll_t;
 
 
 kdk_uint32
@@ -45,16 +45,16 @@ kdk_dl_open(kdk_char32 *dl_file, kdk_char32 *func_name, kdk_dl_handle_t *dl_hand
 kdk_void 
 kdk_dl_close(kdk_dl_handle_t *dl_handle);
 
-kdk_dl_handle_collection_t *
-kdk_dl_handle_collection_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size);
+kdk_dl_handle_coll_t *
+kdk_dl_handle_coll_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size);
 
 kdk_uint32
-kdk_dl_handle_collection_set(kdk_char32 *dl_file, kdk_char32 *func_name, kdk_dl_handle_collection_t *collection);
+kdk_dl_handle_coll_set(kdk_dl_handle_coll_t *dl_handle_coll, kdk_char32 *dl_file, kdk_char32 *func_name);
 
 kdk_uint32
-kdk_dl_handle_collection_get(kdk_dl_handle_collection_t *collection, kdk_char32 *func_name, kdk_dl_handle_t *dl_handle);
+kdk_dl_handle_coll_get(kdk_dl_handle_coll_t *dl_handle_coll, kdk_char32 *func_name, kdk_dl_handle_t *dl_handle);
 
 kdk_void
-kdk_dl_handle_collection_destroy(kdk_dl_handle_collection_t *collection);
+kdk_dl_handle_coll_destroy(kdk_dl_handle_coll_t *dl_handle_coll);
 
 #endif /* _KDK_DL_H_INCLUDED_ */
