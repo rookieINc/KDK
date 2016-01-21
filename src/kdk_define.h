@@ -22,6 +22,8 @@ typedef void         kdk_void;
 typedef double       kdk_double32;
 typedef long         kdk_long32;
 
+typedef pid_t        kdk_pid;
+
 #define KDK_NULL        NULL
 #define KDK_NULLFOUND   ((kdk_void *)(1))
 

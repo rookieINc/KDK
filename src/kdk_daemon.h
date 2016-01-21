@@ -18,6 +18,8 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
+#define DAEMON_DEFAULT               0
+
 #define DAEMON_NO_MASK             010
 #define DAEMON_NO_CHDIR             01
 #define DAEMON_NO_CLOSE_FILES       02
