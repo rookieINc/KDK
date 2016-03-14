@@ -22,6 +22,7 @@
 #include "kdk_config.h"
 #include "kdk_dl.h"
 #include "kdk_daemon.h"
+#include "kdk_log.h"
 /*
 #include "kdk_stack.h"
 #include "kdk_queue.h"

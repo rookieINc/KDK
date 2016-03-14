@@ -14,13 +14,17 @@
 #ifndef _KDK_BASE_H_INCLUDED_
 #define _KDK_BASE_H_INCLUDED_
 
+#define  _XOPEN_SOURCE
+
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <stdarg.h>
 #include <string.h>
 #include <unistd.h>
 #include <errno.h>
 #include <ctype.h>
+#include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/fcntl.h>

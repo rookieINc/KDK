@@ -211,7 +211,6 @@ kdk_config_set_value(kdk_config_t *config, kdk_char32 *section, kdk_char32 *key,
 {
     kdk_uint32      hash_key_len = CONFIG_SECTION_LEN + CONFIG_KEY_LEN;
     kdk_char32      hash_key[CONFIG_SECTION_LEN + CONFIG_KEY_LEN] = {0};
-    kdk_uint32      ret_code;
 
     if(config == KDK_NULL || section == KDK_NULL || key == KDK_NULL || value == KDK_NULL)
         return KDK_NULLPTR;

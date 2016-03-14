@@ -16,13 +16,18 @@
 
 typedef unsigned int kdk_uint32;
 typedef int          kdk_int32;
+typedef short        kdk_short32;
+typedef long         kdk_long32;
 typedef FILE         kdk_file;
 typedef char         kdk_char32;
 typedef void         kdk_void;
 typedef double       kdk_double32;
-typedef long         kdk_long32;
 
 typedef pid_t        kdk_pid;
+typedef time_t       kdk_time;
+
+typedef struct stat  kdk_stat_t;
+typedef struct tm    kdk_tm_t;
 
 #define KDK_NULL        NULL
 #define KDK_NULLFOUND   ((kdk_void *)(1))

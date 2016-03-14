@@ -16,8 +16,6 @@
 kdk_uint32
 kdk_dl_open(kdk_char32 *dl_file, kdk_char32 *func_name, kdk_dl_handle_t *dl_handle)
 {
-    kdk_void    *handle;
-
     if(dl_file == KDK_NULL || func_name == KDK_NULL || dl_handle == KDK_NULL)
         return KDK_INARG;
 
