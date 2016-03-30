@@ -17,15 +17,16 @@
 #include "kdk_base.h"
 #include "kdk_mem_pool.h"
 #include "kdk_hash_table.h"
+#include "kdk_string.h"
 
 #define FLAG_COMMENT   1
 #define FLAG_SECTION   2
 #define FLAG_KEYVALUE  3
 
-#define CONFIG_KEY_LEN      42
-#define CONFIG_VALUE_LEN    42
-#define CONFIG_SECTION_LEN  42
-#define CONFIG_LINE_LEN     110
+#define CONFIG_KEY_LEN      108
+#define CONFIG_VALUE_LEN    108
+#define CONFIG_SECTION_LEN  54 
+#define CONFIG_LINE_LEN     256
 
 struct kdk_config_s
 {

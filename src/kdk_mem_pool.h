@@ -20,7 +20,7 @@
 #define ALIGNNUM            8
 #define ISNOTCLEAR          0
 #define ISCLEAR             1
-#define EIGHT_ALIGN(x)      x
+#define EIGHT_ALIGN(x)      (((x) / 8 + 1) * 8)
 #define ALIGN(x)            EIGHT_ALIGN(x)
 #define MEMPOOLALIGNSIZE    ALIGN(sizeof(kdk_mem_pool_t))
 #define MEMCELLALIGNSIZE    ALIGN(sizeof(kdk_mem_cell_t))

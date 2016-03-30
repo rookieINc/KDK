@@ -176,7 +176,7 @@ kdk_log_init(kdk_uint32 mask, kdk_uint32 level, kdk_char32 *file_path, kdk_char3
     return KDK_SUCCESS;
 }
 
-static kdk_uint32
+static kdk_void
 kdk_log_write_(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *fmt, kdk_va_list ap)
 {
     kdk_time_t      log_time; 
@@ -185,6 +185,9 @@ kdk_log_write_(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *
 
     memset(&log_time, 0, sizeof(log_time));
     kdk_time_get_date_time(&log_time);
+
+    if(level < stc_log.level)
+        return ;
 
     memset(&log_level, 0, sizeof(log_level));
     switch(level)
@@ -212,8 +215,9 @@ kdk_log_write_(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *
     vsnprintf(log_line + strlen(log_line), LOG_LINE_SIZE, fmt, ap);
 
     fprintf(stc_log.file_handle, "%s\n", log_line);
+    fflush(stc_log.file_handle);
     
-    return KDK_SUCCESS;
+    return ;
 }
 
 kdk_uint32

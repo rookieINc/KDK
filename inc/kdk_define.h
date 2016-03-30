@@ -56,5 +56,8 @@ typedef va_list      kdk_va_list;
             return (y);\
     }while(0)
 
+#define PATH_LEN    48
+#define NAME_LEN    48
+#define ARG_LEN     10
 
 #endif /* _KDK_DEFINE_H_INCLUDED_ */

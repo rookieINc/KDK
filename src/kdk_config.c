@@ -55,7 +55,7 @@ kdk_config_parse_key_value(kdk_char32 *str, kdk_char32 *key, kdk_char32 *value)
     if(str == KDK_NULL || key == KDK_NULL || value == KDK_NULL)
         return KDK_NULLPTR;
 
-    sscanf(str, "%41[^=]=%41s", key, value);
+    sscanf(str, "%107[^=]=%107s", key, value);
 
     for(i = 0; i < strlen(key); i++)
     {
@@ -64,6 +64,9 @@ kdk_config_parse_key_value(kdk_char32 *str, kdk_char32 *key, kdk_char32 *value)
             return KDK_INVAL;
 */
     }
+
+    str_trim(key);
+    str_trim(value);
 
     if(strlen(value) == 0)
         return KDK_INVAL;
