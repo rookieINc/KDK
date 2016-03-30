@@ -50,7 +50,10 @@ kdk_log_set_file_date(kdk_log_t *log)
     kdk_time_get_current_date(file_date);
 
     if(strcmp(file_date, log->file_date) > 0)
-       strncpy(log->file_date, file_date, 8);
+    {
+        strncpy(log->file_date, file_date, 8);
+        return KDK_INIT;
+    }
 
     return KDK_SUCCESS;
 }
@@ -94,35 +97,36 @@ static kdk_uint32
 kdk_log_set_file_handle(kdk_log_t *log)
 {
     kdk_uint32      ret_code;
-    kdk_uint32      init = 0;
 
     if(log == KDK_NULL)
         return KDK_INARG;
 
-    do
+    // Not strong enough
+    if(log->file_handle == KDK_NULL)
     {
-        if(log->file_handle != KDK_NULL)
+        ret_code = kdk_log_set_file_handle_(log);
+        if(ret_code)
+            return ret_code;
+    }
+    else 
+    {
+        do
         {
             fclose(log->file_handle);
             log->file_handle = KDK_NULL;
-        }
 
-        if(init != 0)
-        {
             ret_code = kdk_log_set_file_last(log);
             if(ret_code) 
                 return ret_code;
+
+            ret_code = kdk_log_set_file_handle_(log);
+            if(ret_code)
+                return KDK_NULLPTR;
         }
-
-        init = 1;
-
-        ret_code = kdk_log_set_file_handle_(log);
-        if(ret_code)
-            return KDK_NULLPTR;
+        while(kdk_log_check_file_size(log->file_handle, 0) != KDK_SUCCESS);
     }
-    while(kdk_log_check_file_size(log->file_handle, 0) != KDK_SUCCESS);
 
-    //write date
+    //write init date
 
     return KDK_SUCCESS;
 }
@@ -160,7 +164,7 @@ kdk_log_init(kdk_uint32 mask, kdk_uint32 level, kdk_char32 *file_path, kdk_char3
     }
 
     ret_code = kdk_log_set_file_date(&stc_log);
-    if(ret_code)
+    if(ret_code && ret_code != KDK_INIT)
         return ret_code;
 
     ret_code = kdk_log_set_file_handle(&stc_log);
@@ -170,10 +174,84 @@ kdk_log_init(kdk_uint32 mask, kdk_uint32 level, kdk_char32 *file_path, kdk_char3
     return KDK_SUCCESS;
 }
 
-kdk_uint32
-kdk_log_write()
+static kdk_uint32
+kdk_log_write_(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *fmt, kdk_va_list ap)
 {
+    kdk_time_t      log_time; 
+    kdk_char32      log_line[LOG_LINE_SIZE] = {0};
+    kdk_char32      log_level[9] = {0};
 
+    memset(&log_time, 0, sizeof(log_time));
+    kdk_time_get_date_time(&log_time);
+
+    memset(&log_level, 0, sizeof(log_level));
+    switch(level)
+    {
+        case LOG_LEVEL_ERROR:
+            strncpy(log_level, "ERROR", 6);
+            break;
+        case LOG_LEVEL_WARN:
+            strncpy(log_level, "WARN ", 6);
+            break;
+        case LOG_LEVEL_INFO:
+            strncpy(log_level, "INFO ", 6);
+            break;
+        case LOG_LEVEL_DEBUG:
+            strncpy(log_level, "DEBUG", 6);
+            break;
+        default:
+            strncpy(log_level, "     ", 6);
+            break;
+    }
+
+    memset(log_line, 0, sizeof(log_line));
+    snprintf(log_line, LOG_LINE_SIZE, "[%s][%s][%-5d][%s:%d] ", log_time.hms2, log_level, getpid(), file, line);
+
+    vsnprintf(log_line + strlen(log_line), LOG_LINE_SIZE, fmt, ap);
+
+    fprintf(stc_log.file_handle, "%s\n", log_line);
+    
+    return KDK_SUCCESS;
+}
+
+kdk_uint32
+kdk_log_write(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *fmt, ...)
+{
+    kdk_uint32      ret_code;
+    kdk_va_list     ap;
+
+    if(file == KDK_NULL || fmt == KDK_NULL)
+        return KDK_INARG;
+
+    ret_code = kdk_log_set_file_date(&stc_log);
+    if(ret_code && ret_code != KDK_INIT)
+    {
+        return ret_code;
+    }
+    else if(ret_code == KDK_INIT)
+    {
+        ret_code = kdk_log_set_file_handle(&stc_log);
+        if(ret_code)
+            return ret_code;
+    }
+    else
+    {
+        // NULL
+    }
+
+    ret_code = kdk_log_check_file_size(stc_log.file_handle, LOG_LINE_SIZE);
+    if(ret_code)
+    {
+        ret_code = kdk_log_set_file_handle(&stc_log);
+        if(ret_code)
+            return ret_code;
+    }
+
+    va_start(ap,fmt);
+    kdk_log_write_(level, file, line, fmt, ap);
+    va_end(ap);
+    
+    return KDK_SUCCESS;
 }
 
 kdk_void
@@ -183,6 +261,7 @@ kdk_log_destroy()
         fclose(stc_log.file_handle);
 
     memset(&stc_log, 0, sizeof(stc_log));
+    stc_log.file_last[0] = 'A';
 
     return ;
 }

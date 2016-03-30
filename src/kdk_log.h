@@ -32,6 +32,16 @@ typedef struct kdk_log_s kdk_log_t;
 
 #define LOG_INIT {KDK_NULL, 0, 0, {0}, {0}, {0}, {'A', '\0'}}
 
+#define LOG_LINE_SIZE   257
+
+enum
+{
+    LOG_LEVEL_ERROR = 0x00,
+    LOG_LEVEL_WARN  = 0x01,
+    LOG_LEVEL_INFO  = 0x02,
+    LOG_LEVEL_DEBUG = 0x03
+};
+
 static kdk_log_t stc_log = LOG_INIT;
 
 static kdk_uint32
@@ -49,11 +59,22 @@ kdk_log_set_file_handle_(kdk_log_t *log);
 static kdk_uint32
 kdk_log_set_file_handle(kdk_log_t *log);
 
+static kdk_uint32
+kdk_log_write_(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *fmt, kdk_va_list ap);
+
+kdk_uint32
+kdk_log_write(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *fmt, ...);
+
 kdk_uint32
 kdk_log_init(kdk_uint32 mask, kdk_uint32 level, kdk_char32 *file_path, kdk_char32 *file_name);
 
 kdk_void
 kdk_log_destroy();
+
+
+#define PREFIXLOG(level)  LOG_LEVEL_##level, __FILE__, __LINE__
+
+#define LOG(level, ...)  kdk_log_write(PREFIXLOG(level), __VA_ARGS__)
 
 
 #endif /* _KDK_LOG_H_INCLUDED_ */

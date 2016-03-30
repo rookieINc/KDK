@@ -28,6 +28,7 @@ typedef time_t       kdk_time;
 
 typedef struct stat  kdk_stat_t;
 typedef struct tm    kdk_tm_t;
+typedef va_list      kdk_va_list;
 
 #define KDK_NULL        NULL
 #define KDK_NULLFOUND   ((kdk_void *)(1))
@@ -42,6 +43,7 @@ typedef struct tm    kdk_tm_t;
 #define KDK_OVERFLOW    0x6005
 #define KDK_INVAL       0x6006
 #define KDK_INARG       0x6007
+#define KDK_INIT        0x6008
 
 #define malloc MALLOC
 #define free   FREE

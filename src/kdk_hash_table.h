@@ -39,12 +39,6 @@ typedef struct kdk_hash_table_s kdk_hash_table_t;
 
 kdk_hash_node_t  *hash_node_curr;
 
-static kdk_uint32          
-kdk_djb_hash(kdk_char32 *str, kdk_uint32 *res);
-
-static kdk_hash_node_t *   
-kdk_hash_node_create(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void *value, kdk_uint32 value_len);
-
 kdk_hash_table_t *  
 kdk_hash_table_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_uint32 prime);
 

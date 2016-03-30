@@ -48,12 +48,6 @@ struct kdk_mem_pool_s
 
 typedef struct kdk_mem_pool_s kdk_mem_pool_t;
 
-static kdk_mem_cell_t *
-kdk_mem_cell_create(kdk_uint32 size);
-
-static kdk_uint32 
-kdk_mem_cell_clear(kdk_mem_cell_t *cell);
-
 kdk_mem_pool_t *     
 kdk_mem_pool_create(kdk_uint32 size, kdk_uint32 realloc_size);
 
