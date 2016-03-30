@@ -188,7 +188,7 @@ kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key)
 kdk_void *
 kdk_hash_table_next_value(kdk_hash_table_t *hash_table)
 {
-    kdk_uint32          i, pos, ret_code;
+    kdk_uint32          pos, ret_code;
 
     if(hash_table == KDK_NULL)
         return KDK_NULL;

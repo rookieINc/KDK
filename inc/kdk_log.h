@@ -42,26 +42,6 @@ enum
     LOG_LEVEL_DEBUG = 0x03
 };
 
-static kdk_log_t stc_log = LOG_INIT;
-
-static kdk_uint32
-kdk_log_check_file_size(kdk_file *file_handle, kdk_uint32 size);
-
-static kdk_uint32
-kdk_log_set_file_date(kdk_log_t *log);
-
-static kdk_uint32
-kdk_log_set_file_last(kdk_log_t *log);
-
-static kdk_uint32
-kdk_log_set_file_handle_(kdk_log_t *log);
-
-static kdk_uint32
-kdk_log_set_file_handle(kdk_log_t *log);
-
-static kdk_uint32
-kdk_log_write_(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *fmt, kdk_va_list ap);
-
 kdk_uint32
 kdk_log_write(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *fmt, ...);
 

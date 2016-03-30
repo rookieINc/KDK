@@ -37,18 +37,6 @@ struct kdk_config_s
 
 typedef struct kdk_config_s kdk_config_t;
 
-static kdk_uint32
-kdk_config_parse_section(kdk_char32 *str, kdk_char32 *section);
-
-static kdk_uint32
-kdk_config_parse_key_value(kdk_char32 *str, kdk_char32 *key, kdk_char32 *value);
-
-static kdk_uint32
-kdk_config_parse_comment(kdk_char32 *str);
-
-static kdk_uint32
-kdk_config_parse_line(kdk_config_t *config, kdk_char32 *str, kdk_char32 *section);
-
 kdk_config_t * 
 kdk_config_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_char32 *config_file);
 

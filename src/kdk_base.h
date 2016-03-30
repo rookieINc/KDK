@@ -14,8 +14,6 @@
 #ifndef _KDK_BASE_H_INCLUDED_
 #define _KDK_BASE_H_INCLUDED_
 
-#define  _XOPEN_SOURCE
-
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
@@ -30,6 +28,8 @@
 #include <sys/fcntl.h>
 
 #include <dlfcn.h>
+
+
 
 #include "kdk_define.h"
 

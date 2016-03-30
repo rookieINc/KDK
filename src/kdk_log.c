@@ -13,6 +13,8 @@
 
 #include "kdk_log.h"
 
+static kdk_log_t stc_log = LOG_INIT;
+
 static kdk_uint32
 kdk_log_check_file_size(kdk_file *file_handle, kdk_uint32 size)
 {
