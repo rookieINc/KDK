@@ -7,9 +7,10 @@ C_FLAG=-g -Wall
 SO_FILE=libkdk.so
 H_FILE=kdk.h kdk_base.h kdk_define.h \
 	   kdk_malloc.h kdk_mem_pool.h kdk_hash_table.h kdk_string.h \
-	   kdk_config.h kdk_dl.h kdk_daemon.h kdk_log.h kdk_time.h
+	   kdk_config.h kdk_dl.h kdk_daemon.h kdk_log.h kdk_time.h 	 \
+	   kdk_json.h tdo/cJSON/cJSON.h 
 C_FILE=kdk_malloc.c kdk_mem_pool.c kdk_hash_table.c kdk_string.c \
-	   kdk_config.c kdk_dl.c kdk_daemon.c kdk_log.c kdk_time.c
+	   kdk_config.c kdk_dl.c kdk_daemon.c kdk_log.c kdk_time.c tdo/cJSON/cJSON.c
 
 .PHONY:ALL
 ALL:inc_install $(SO_FILE) lib_install

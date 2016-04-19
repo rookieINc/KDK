@@ -35,7 +35,7 @@ kdk_log_check_file_size(kdk_file *file_handle, kdk_uint32 size)
     if(ret_code != KDK_SUCCESS)
         return KDK_FAILURE;
 
-    if(stat_buf.st_size >= 4294967296 - size)
+    if(stat_buf.st_blksize >= 8388608 - (size / 512 + 1))
         return KDK_OVERFLOW;
     
     return KDK_SUCCESS;
@@ -61,15 +61,10 @@ kdk_log_set_file_date(kdk_log_t *log)
 }
 
 static kdk_uint32
-kdk_log_set_file_last(kdk_log_t *log)
+kdk_log_check_file_last(kdk_log_t *log)
 {
     if(log == KDK_NULL)
         return KDK_INARG;
-
-    if(isupper(log->file_last[0]) == 0)
-        return KDK_FAILURE;
-    
-    log->file_last[0] = log->file_last[0] + 1;
 
     if(isupper(log->file_last[0]) == 0)
         return KDK_FAILURE;
@@ -78,12 +73,38 @@ kdk_log_set_file_last(kdk_log_t *log)
 }
 
 static kdk_uint32
-kdk_log_set_file_handle_(kdk_log_t *log)
+kdk_log_set_file_last(kdk_log_t *log)
 {
+    kdk_uint32  ret_code;
+
     if(log == KDK_NULL)
         return KDK_INARG;
 
+    ret_code = kdk_log_check_file_last(log);
+    if(ret_code)
+        return ret_code;
+
+    log->file_last[0] = log->file_last[0] + 1;
+
+    ret_code = kdk_log_check_file_last(log);
+    if(ret_code)
+        return ret_code;
+
+    return KDK_SUCCESS;
+}
+
+static kdk_uint32
+kdk_log_set_file_handle_(kdk_log_t *log)
+{
+    kdk_uint32  ret_code;
     kdk_char32  log_path_file[140] = {0};
+
+    if(log == KDK_NULL)
+        return KDK_INARG;
+
+    ret_code = kdk_log_check_file_last(log);
+    if(ret_code)
+        return ret_code;
 
     memset(log_path_file, 0, sizeof(log_path_file));
     snprintf(log_path_file, 140, "%s%s.%s_%s", log->file_path, log->file_name, log->file_date, log->file_last);
@@ -229,6 +250,9 @@ kdk_log_write(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *f
     if(file == KDK_NULL || fmt == KDK_NULL)
         return KDK_INARG;
 
+    if(strcmp(stc_log.file_name, "") == 0 || strcmp(stc_log.file_path, "") == 0)
+        return KDK_NOTFOUND;
+
     ret_code = kdk_log_set_file_date(&stc_log);
     if(ret_code && ret_code != KDK_INIT)
     {
@@ -252,6 +276,7 @@ kdk_log_write(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *f
         if(ret_code)
             return ret_code;
     }
+
 
     va_start(ap,fmt);
     kdk_log_write_(level, file, line, fmt, ap);

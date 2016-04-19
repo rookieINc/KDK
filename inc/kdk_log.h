@@ -43,10 +43,10 @@ enum
 };
 
 kdk_uint32
-kdk_log_write(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *fmt, ...);
+kdk_log_init(kdk_uint32 mask, kdk_uint32 level, kdk_char32 *file_path, kdk_char32 *file_name);
 
 kdk_uint32
-kdk_log_init(kdk_uint32 mask, kdk_uint32 level, kdk_char32 *file_path, kdk_char32 *file_name);
+kdk_log_write(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *fmt, ...);
 
 kdk_void
 kdk_log_destroy();
