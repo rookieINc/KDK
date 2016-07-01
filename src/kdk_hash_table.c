@@ -184,6 +184,42 @@ kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key)
     return KDK_NULLFOUND;
 }
 
+kdk_uint32
+kdk_hash_table_get_value_str(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_char32 *value)
+{
+    kdk_uint32        pos, res; 
+    kdk_hash_node_t  *tmp;
+
+    if(hash_table == KDK_NULL || key == KDK_NULL || value == KDK_NULL)
+        return KDK_NULLPTR;
+
+    res = kdk_djb_hash(key, &pos);
+    if(res)
+        return KDK_NULLPTR;
+
+    pos = pos % hash_table->prime;
+    tmp = *(hash_table->board + pos);
+
+/*
+    fprintf(stderr, "get key:%s\n", key);
+    fprintf(stderr, "get pos:%d\n", pos);
+    fprintf(stderr, "get tmp:%p\n", tmp);
+*/
+
+    while(tmp)
+    {
+        if(tmp->key != KDK_NULL && strcmp(tmp->key, key) == 0)
+        {
+            strncpy(value, tmp->value, strlen(tmp->value));
+            return KDK_SUCCESS;
+        }
+
+        tmp = tmp->next;
+    }
+
+    return KDK_NOTFOUND;
+}
+
 
 kdk_void *
 kdk_hash_table_next_value(kdk_hash_table_t *hash_table)

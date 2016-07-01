@@ -48,6 +48,9 @@ kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void
 kdk_void *              
 kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key);
 
+kdk_uint32
+kdk_hash_table_get_value_str(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_char32 *value);
+
 kdk_void *              
 kdk_hash_table_next_value(kdk_hash_table_t *hash_table);
 

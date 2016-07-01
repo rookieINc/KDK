@@ -32,9 +32,9 @@
 *.dSYM/
 
 # Useless files
-./src/bak/*
-./inc/kdk*.h
-./lib/*kdk*
+src/bak/*
+inc/kdk*.h
+lib/*kdk*
 
 # Core dump files
 core.*
