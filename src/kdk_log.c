@@ -213,16 +213,16 @@ kdk_log_write_(kdk_uint32 level, kdk_char32 *file, kdk_uint32 line, kdk_char32 *
     memset(&log_level, 0, sizeof(log_level));
     switch(level)
     {
-        case LOG_LEVEL_ERROR:
+        case KDK_LOG_LEVEL_ERROR:
             strncpy(log_level, "ERROR", 6);
             break;
-        case LOG_LEVEL_WARN:
+        case KDK_LOG_LEVEL_WARN:
             strncpy(log_level, "WARN ", 6);
             break;
-        case LOG_LEVEL_INFO:
+        case KDK_LOG_LEVEL_INFO:
             strncpy(log_level, "INFO ", 6);
             break;
-        case LOG_LEVEL_DEBUG:
+        case KDK_LOG_LEVEL_DEBUG:
             strncpy(log_level, "DEBUG", 6);
             break;
         default:

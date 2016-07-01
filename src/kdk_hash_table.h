@@ -48,13 +48,17 @@ kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void
 kdk_void *              
 kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key);
 
-kdk_uint32
-kdk_hash_table_get_value_str(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_char32 *value);
-
 kdk_void *              
 kdk_hash_table_next_value(kdk_hash_table_t *hash_table);
 
 kdk_void                
 kdk_hash_table_destroy(kdk_hash_table_t *hash_table);
+
+
+kdk_uint32          
+kdk_hash_table_set_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_char32 *value);
+
+kdk_uint32
+kdk_hash_table_get_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_char32 *value);
 
 #endif /* _KDK_HASH_TABLE_H_INCLUDED_ */

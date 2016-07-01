@@ -184,8 +184,14 @@ kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key)
     return KDK_NULLFOUND;
 }
 
+kdk_uint32 
+kdk_hash_table_set_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_char32 *value)
+{
+    return kdk_hash_table_set_value(hash_table, key, (kdk_void *)value, strlen(value));
+}
+
 kdk_uint32
-kdk_hash_table_get_value_str(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_char32 *value)
+kdk_hash_table_get_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_char32 *value)
 {
     kdk_uint32        pos, res; 
     kdk_hash_node_t  *tmp;
