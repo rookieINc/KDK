@@ -2,7 +2,7 @@ KDK_PATH=$(subst $(prefix),,$(shell cd ..; pwd))
 FEE_PATH=$(subst $(prefix),,$(shell cd ../../FEE; pwd))
 INC_PATH=-I$(KDK_PATH)/inc
 LIB_PATH=-L$(KDK_PATH)/lib
-C_FLAG=-g -Wall
+C_FLAG=-m32 -g -Wall
 
 SO_FILE=libkdk.so
 H_FILE=kdk.h kdk_base.h kdk_define.h \

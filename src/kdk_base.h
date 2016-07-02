@@ -24,6 +24,7 @@
 #include <ctype.h>
 #include <time.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/stat.h>
 #include <sys/fcntl.h>
 
