@@ -21,6 +21,7 @@ struct kdk_hash_node_s
 {
     kdk_char32              *key;
     kdk_void                *value;
+    kdk_uint32               value_size;
     struct kdk_hash_node_s  *next;
 };
 
@@ -44,6 +45,9 @@ kdk_hash_table_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_ui
 
 kdk_uint32          
 kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void *value, kdk_uint32 value_len);
+
+kdk_void *              
+kdk_hash_table_get_same_value(kdk_hash_table_t *hash_table, kdk_char32 *key);
 
 kdk_void *              
 kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key);

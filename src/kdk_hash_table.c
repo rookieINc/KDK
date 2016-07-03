@@ -192,16 +192,16 @@ kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void
         return KDK_SUCCESS;
     }
 
-    if(valen_len < same->value_size)
+    if(value_len < same->value_size)
     {
         memset(same->value, 0, same->value_size);
-        memcpy(hash_node->value, value, value_len);
+        memcpy(same->value, value, value_len);
     }
     else
     { 
         same->value = kdk_mem_pool_malloc(hash_table->mem_pool, value_len + 1);
         if(same->value == KDK_NULL)
-            return KDK_NULL;
+            return KDK_NULLPTR;
 
         same->value_size = value_len + 1;
         memcpy(same->value, value, value_len);
