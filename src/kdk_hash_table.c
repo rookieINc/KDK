@@ -267,6 +267,16 @@ kdk_hash_table_get_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_cha
     return KDK_SUCCESS;
 }
 
+kdk_uint32 
+kdk_hash_table_set_long(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_long32 value)
+{
+    kdk_char32  str_value[21] = {0};
+
+    snprintf(str_value, 21, "%ld", value);
+
+    return kdk_hash_table_set_value(hash_table, key, (kdk_void *)str_value, strlen(str_value));
+}
+
 kdk_uint32
 kdk_hash_table_get_long(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_long32 *value)
 {
@@ -283,19 +293,8 @@ kdk_hash_table_get_long(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_long3
     return KDK_SUCCESS;
 }
 
-kdk_uint32 
-kdk_hash_table_set_long(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_long32 value)
-{
-    kdk_char32  str_value[21] = {0};
-
-    snprintf(str_value, 21, "%ld", value);
-
-    return kdk_hash_table_set_value(hash_table, key, (kdk_void *)str_value, strlen(str_value));
-}
-
-
-kdk_void *
-kdk_hash_table_next_value(kdk_hash_table_t *hash_table)
+kdk_hash_node_t *
+kdk_hash_table_next_node(kdk_hash_table_t *hash_table)
 {
     kdk_uint32          pos, ret_code;
 
@@ -305,7 +304,7 @@ kdk_hash_table_next_value(kdk_hash_table_t *hash_table)
     if(hash_node_curr != KDK_NULL && hash_node_curr->next != KDK_NULL)
     {
         hash_node_curr = hash_node_curr->next;
-        return hash_node_curr->value;
+        return hash_node_curr;
     }
     else
     {
@@ -339,8 +338,42 @@ kdk_hash_table_next_value(kdk_hash_table_t *hash_table)
         if(hash_node_curr == KDK_NULL)
             return KDK_NULLFOUND;
         else
-            return hash_node_curr->value;
+            return hash_node_curr;
     }
+}
+
+kdk_char32 *
+kdk_hash_table_next_key(kdk_hash_table_t *hash_table)
+{
+    kdk_hash_node_t    *ret_node;
+
+    if(hash_table == KDK_NULL)
+        return KDK_NULL;
+
+    ret_node = kdk_hash_table_next_node(hash_table);
+    if(ret_node == KDK_NULLFOUND)
+        return KDK_NULLFOUND;
+    else if(ret_node == KDK_NULL)
+        return KDK_NULL;
+
+    return ret_node->key;
+}
+
+kdk_void *
+kdk_hash_table_next_value(kdk_hash_table_t *hash_table)
+{
+    kdk_hash_node_t    *ret_node;
+
+    if(hash_table == KDK_NULL)
+        return KDK_NULL;
+
+    ret_node = kdk_hash_table_next_node(hash_table);
+    if(ret_node == KDK_NULLFOUND)
+        return KDK_NULLFOUND;
+    else if(ret_node == KDK_NULL)
+        return KDK_NULL;
+
+    return ret_node->value;
 }
 
 
