@@ -68,4 +68,7 @@ kdk_hash_table_get_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_cha
 kdk_uint32          
 kdk_hash_table_set_long(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_long32 value);
 
+kdk_uint32          
+kdk_hash_table_get_long(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_long32 *value);
+
 #endif /* _KDK_HASH_TABLE_H_INCLUDED_ */

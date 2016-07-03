@@ -253,38 +253,34 @@ kdk_hash_table_set_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_cha
 kdk_uint32
 kdk_hash_table_get_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_char32 *value, kdk_uint32 *value_len)
 {
-    kdk_uint32        pos, res; 
-    kdk_hash_node_t  *tmp;
-
-    if(hash_table == KDK_NULL || key == KDK_NULL || value == KDK_NULL)
+    kdk_char32      *offset;
+    
+    offset = kdk_hash_table_get_value(hash_table, key);
+    if(offset == KDK_NULL)
         return KDK_NULLPTR;
+    else if(offset == KDK_NULLFOUND)
+        return KDK_NOTFOUND;
 
-    res = kdk_djb_hash(key, &pos);
-    if(res)
+    strncpy(value, offset, *value_len);
+    *value_len = strlen(value);
+    
+    return KDK_SUCCESS;
+}
+
+kdk_uint32
+kdk_hash_table_get_long(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_long32 *value)
+{
+    kdk_char32      *offset;
+    
+    offset = kdk_hash_table_get_value(hash_table, key);
+    if(offset == KDK_NULL)
         return KDK_NULLPTR;
+    else if(offset == KDK_NULLFOUND)
+        return KDK_NOTFOUND;
 
-    pos = pos % hash_table->prime;
-    tmp = *(hash_table->board + pos);
-
-/*
-    fprintf(stderr, "get key:%s\n", key);
-    fprintf(stderr, "get pos:%d\n", pos);
-    fprintf(stderr, "get tmp:%p\n", tmp);
-*/
-
-    while(tmp)
-    {
-        if(tmp->key != KDK_NULL && strcmp(tmp->key, key) == 0)
-        {
-            *value_len = strlen(tmp->value) < *value_len ? strlen(tmp->value) : *value_len;
-            strncpy(value, tmp->value, *value_len);
-            return KDK_SUCCESS;
-        }
-
-        tmp = tmp->next;
-    }
-
-    return KDK_NOTFOUND;
+    *value = atoi(offset);
+    
+    return KDK_SUCCESS;
 }
 
 kdk_uint32 
