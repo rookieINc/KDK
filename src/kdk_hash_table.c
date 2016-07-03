@@ -108,12 +108,47 @@ kdk_hash_table_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_ui
     return hash_table;
 }
 
+kdk_hash_node_t *
+kdk_hash_table_get_same_prev_node(kdk_hash_table_t *hash_table, kdk_char32 *key)
+{
+    kdk_uint32        pos, res; 
+    kdk_hash_node_t  *tmp, *prev;
+
+    if(hash_table == KDK_NULL || key == KDK_NULL)
+        return KDK_NULL;
+
+    res = kdk_djb_hash(key, &pos);
+    if(res)
+        return KDK_NULL;
+
+    pos = pos % hash_table->prime;
+    tmp = *(hash_table->board + pos);
+
+/*
+    fprintf(stderr, "get key:%s\n", key);
+    fprintf(stderr, "get pos:%d\n", pos);
+    fprintf(stderr, "get tmp:%p\n", tmp);
+*/
+
+    prev = tmp;
+    while(tmp)
+    {
+        if(tmp->key != KDK_NULL && strcmp(tmp->key, key) == 0)
+            return prev;
+
+        prev = tmp;
+        tmp = tmp->next;
+    }
+
+    return KDK_NULLFOUND;
+}
+
 
 kdk_uint32 
 kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void *value, kdk_uint32 value_len)
 {
     kdk_uint32       pos, res; 
-    kdk_hash_node_t  **tmp, *new;
+    kdk_hash_node_t  **tmp, *new, *same_prev;
 
     if(hash_table == KDK_NULL || key == KDK_NULL || value == KDK_NULL || value_len == 0)
         return KDK_INARG;
@@ -141,8 +176,28 @@ kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void
     }
     else
     {
-        new->next    = (*tmp)->next;
-        (*tmp)->next = new;
+        same_prev = kdk_hash_table_get_same_prev_node(hash_table, key);
+        if(same_prev == KDK_NULL)
+        {
+            return KDK_FAILURE;
+        }
+        else if(same_prev != KDK_NULLFOUND)
+        {
+            if(strcmp(same_prev->key, new->key) == 0) 
+            {
+                *tmp = new;
+            }
+            else
+            {
+                new->next = same_prev->next->next;
+                same_prev->next = new;
+            }
+        }
+        else
+        { 
+            new->next    = (*tmp)->next;
+            (*tmp)->next = new;
+        }
     }
 
     (hash_table->count)++;
@@ -191,7 +246,7 @@ kdk_hash_table_set_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_cha
 }
 
 kdk_uint32
-kdk_hash_table_get_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_char32 *value)
+kdk_hash_table_get_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_char32 *value, kdk_uint32 *value_len)
 {
     kdk_uint32        pos, res; 
     kdk_hash_node_t  *tmp;
@@ -216,7 +271,8 @@ kdk_hash_table_get_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_cha
     {
         if(tmp->key != KDK_NULL && strcmp(tmp->key, key) == 0)
         {
-            strncpy(value, tmp->value, strlen(tmp->value));
+            *value_len = strlen(tmp->value) < *value_len ? strlen(tmp->value) : *value_len;
+            strncpy(value, tmp->value, *value_len);
             return KDK_SUCCESS;
         }
 
