@@ -52,6 +52,9 @@ kdk_hash_table_get_same_value(kdk_hash_table_t *hash_table, kdk_char32 *key);
 kdk_void *              
 kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key);
 
+void
+kdk_hash_table_reset_next_node();
+
 kdk_hash_node_t *
 kdk_hash_table_next_node(kdk_hash_table_t *hash_table);
 

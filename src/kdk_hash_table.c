@@ -293,6 +293,14 @@ kdk_hash_table_get_long(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_long3
     return KDK_SUCCESS;
 }
 
+void
+kdk_hash_table_reset_next_node()
+{
+    hash_node_curr = KDK_NULL;
+
+    return ;
+}
+
 kdk_hash_node_t *
 kdk_hash_table_next_node(kdk_hash_table_t *hash_table)
 {
