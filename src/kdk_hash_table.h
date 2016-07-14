@@ -17,6 +17,8 @@
 #include "kdk_base.h"
 #include "kdk_mem_pool.h"
 
+#define kdk_hash_table_get_string_array(hash_table, key, value) kdk_hash_table_get_string(hash_table, key, value, sizeof(value) - 1)
+
 struct kdk_hash_node_s
 {
     kdk_char32              *key;
@@ -53,7 +55,7 @@ kdk_void *
 kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key);
 
 void
-kdk_hash_table_reset_next_node();
+kdk_hash_table_next_reset();
 
 kdk_hash_node_t *
 kdk_hash_table_next_node(kdk_hash_table_t *hash_table);

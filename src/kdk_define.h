@@ -14,10 +14,12 @@
 #ifndef _KDK_DEFINE_H_INCLUDED_
 #define _KDK_DEFINE_H_INCLUDED_
 
-typedef unsigned int kdk_uint32;
+//typedef unsigned int kdk_uint32;
+typedef int          kdk_uint32; //For skdpay
 typedef int          kdk_int32;
 typedef short        kdk_short32;
-typedef long         kdk_long32;
+//typedef long         kdk_long32;
+typedef int          kdk_long32; //For sdkpay
 typedef FILE         kdk_file;
 typedef char         kdk_char32;
 typedef void         kdk_void;

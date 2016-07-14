@@ -267,12 +267,13 @@ kdk_hash_table_get_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_cha
     return KDK_SUCCESS;
 }
 
+
 kdk_uint32 
 kdk_hash_table_set_long(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_long32 value)
 {
     kdk_char32  str_value[21] = {0};
 
-    snprintf(str_value, 21, "%ld", value);
+    snprintf(str_value, 21, "%d", value);
 
     return kdk_hash_table_set_value(hash_table, key, (kdk_void *)str_value, strlen(str_value));
 }
@@ -294,7 +295,7 @@ kdk_hash_table_get_long(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_long3
 }
 
 void
-kdk_hash_table_reset_next_node()
+kdk_hash_table_next_reset()
 {
     hash_node_curr = KDK_NULL;
 
