@@ -37,15 +37,18 @@ typedef va_list      kdk_va_list;
 
 #define KDK_LINUXERR    -1
 
-#define KDK_SUCCESS     0x0000
-#define KDK_FAILURE     0x6001
-#define KDK_NULLPTR     0x6002
-#define KDK_ERRNO       0x6003
-#define KDK_NOTFOUND    0x6004
-#define KDK_OVERFLOW    0x6005
-#define KDK_INVAL       0x6006
-#define KDK_INARG       0x6007
-#define KDK_INIT        0x6008
+enum KDK_RET_CODE
+{
+    KDK_SUCCESS  = 0x0000,
+    KDK_FAILURE  = 0x6001,
+    KDK_NULLPTR  = 0x6002,
+    KDK_ERRNO    = 0x6003,
+    KDK_NOTFOUND = 0x6004,
+    KDK_OVERFLOW = 0x6005,
+    KDK_INVAL    = 0x6006,
+    KDK_INARG    = 0x6007,
+    KDK_INIT     = 0x6008
+};
 
 #define malloc MALLOC
 #define free   FREE

@@ -111,7 +111,7 @@ kdk_hash_table_create(kdk_mem_pool_t *mem_pool, kdk_uint32 mem_pool_size, kdk_ui
 }
 
 kdk_hash_node_t *
-kdk_hash_table_get_same_node(kdk_hash_table_t *hash_table, kdk_char32 *key)
+kdk_hash_table_get_node(kdk_hash_table_t *hash_table, kdk_char32 *key)
 {
     kdk_uint32        pos, res; 
     kdk_hash_node_t  *tmp;
@@ -166,7 +166,7 @@ kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void
     fprintf(stderr, "set tmp:%p\n", tmp);
 */
 
-    same = kdk_hash_table_get_same_node(hash_table, key);
+    same = kdk_hash_table_get_node(hash_table, key);
 
     if(same == KDK_NULL)
         return KDK_FAILURE;
@@ -214,34 +214,13 @@ kdk_hash_table_set_value(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_void
 kdk_void *
 kdk_hash_table_get_value(kdk_hash_table_t *hash_table, kdk_char32 *key)
 {
-    kdk_uint32        pos, res; 
     kdk_hash_node_t  *tmp;
 
-    if(hash_table == KDK_NULL || key == KDK_NULL)
-        return KDK_NULL;
+    tmp = kdk_hash_table_get_node(hash_table, key);
+    if(tmp != KDK_NULL && tmp != KDK_NULLFOUND)
+        return tmp->value; 
 
-    res = kdk_djb_hash(key, &pos);
-    if(res)
-        return KDK_NULL;
-
-    pos = pos % hash_table->prime;
-    tmp = *(hash_table->board + pos);
-
-/*
-    fprintf(stderr, "get key:%s\n", key);
-    fprintf(stderr, "get pos:%d\n", pos);
-    fprintf(stderr, "get tmp:%p\n", tmp);
-*/
-
-    while(tmp)
-    {
-        if(tmp->key != KDK_NULL && strcmp(tmp->key, key) == 0)
-            return tmp->value;
-
-        tmp = tmp->next;
-    }
-
-    return KDK_NULLFOUND;
+    return tmp;
 }
 
 kdk_uint32 
@@ -261,12 +240,18 @@ kdk_hash_table_get_string(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_cha
     else if(offset == KDK_NULLFOUND)
         return KDK_NOTFOUND;
 
+    *value_len = strlen(offset);
     strncpy(value, offset, *value_len);
-    *value_len = strlen(value);
     
     return KDK_SUCCESS;
 }
 
+kdk_uint32
+_kdk_hash_table_get_string_array(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_char32 *value, kdk_uint32 value_len)
+{
+    kdk_uint32 tmp_len = value_len;
+    return kdk_hash_table_get_string(hash_table, key, value, &tmp_len);
+}
 
 kdk_uint32 
 kdk_hash_table_set_long(kdk_hash_table_t *hash_table, kdk_char32 *key, kdk_long32 value)
@@ -384,7 +369,6 @@ kdk_hash_table_next_value(kdk_hash_table_t *hash_table)
 
     return ret_node->value;
 }
-
 
 kdk_void 
 kdk_hash_table_destroy(kdk_hash_table_t *hash_table)
